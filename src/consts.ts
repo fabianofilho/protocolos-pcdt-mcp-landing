@@ -12,4 +12,5 @@ export const FAMILY = [
   { slug: "anvisa", nome: "anvisa-mcp", url: "https://mcp.iamed.cc/anvisa", desc: "Registro sanitário da Anvisa" },
   { slug: "radar-cfm", nome: "radar-cfm-mcp", url: "https://mcp.iamed.cc/radar-cfm", desc: "Resoluções do CFM" },
   { slug: "pcdt", nome: "protocolos-pcdt-mcp", url: "https://mcp.iamed.cc/pcdt", desc: "PCDTs do Ministério da Saúde" },
+  { slug: "raciocinio-br", nome: "raciocinio-br-mcp", url: "https://mcp.iamed.cc/raciocinio-br", desc: "Raciocínio clínico avaliado (experimento)" },
 ];
