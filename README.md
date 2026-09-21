@@ -38,8 +38,7 @@ Destino pretendido: `https://mcp.iamed.cc/pcdt` (`site` + `base` em
 
 ## Notas
 
-- O repositório do projeto `protocolos-pcdt-mcp` existe, mas é privado. Os links
-  de GitHub vão falhar para visitantes sem acesso até ele ser tornado público.
+- O repositório do projeto `protocolos-pcdt-mcp` é público, então os links de GitHub funcionam.
 - O exemplo de `resumir_conduta` mostra apenas o formato do retorno: o resumo e a
   citação literal são produzidos em tempo de execução a partir do PDF real, e o
   campo `citacao_confere` indica se a citação existe mesmo no protocolo. Nenhum
@@ -49,4 +48,4 @@ Destino pretendido: `https://mcp.iamed.cc/pcdt` (`site` + `base` em
 
 ## Licença
 
-MIT.
+Apache-2.0.

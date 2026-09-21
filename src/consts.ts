@@ -1,10 +1,9 @@
 // Constantes de link e marca, centralizadas.
-// NOTA: o repo protocolos-pcdt-mcp existe, mas e PRIVADO. Enquanto estiver
-// privado, este link vai 404 para visitantes sem acesso.
+// O repo protocolos-pcdt-mcp e publico.
 export const PROJECT = "protocolos-pcdt-mcp";
 export const GITHUB_URL = "https://github.com/fabianofilho/protocolos-pcdt-mcp";
 export const IAMED_URL = "https://iamed.cc";
-export const LICENSE = "MIT";
+export const LICENSE = "Apache-2.0";
 
 // Familia de MCPs open source da IA.med. SELF_SLUG marca o atual (some do rodape).
 export const SELF_SLUG = "pcdt";
