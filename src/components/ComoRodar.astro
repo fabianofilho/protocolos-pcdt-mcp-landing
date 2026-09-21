@@ -1,0 +1,50 @@
+---
+import CodeBlock from "./CodeBlock.astro";
+import { GITHUB_URL } from "../consts";
+
+const passos = `# 1. clonar o repositório
+git clone ${GITHUB_URL}.git
+cd protocolos-pcdt-mcp
+
+# 2. instalar as dependências
+uv sync
+
+# 3. configurar o ambiente (apontar o .env para o seu LLM local)
+cp .env.example .env
+uv run pcdt-cli llm                 # confirma que o LLM local responde
+
+# 4. coletar os protocolos
+uv run pcdt-cli sync --max-pdfs 5   # teste rápido
+uv run pcdt-cli sync                # coleta (20 PDFs por execução)
+
+# 5. subir o servidor MCP (stdio) e conectar ao seu cliente
+uv run protocolos-pcdt-mcp`;
+---
+
+<section id="como-rodar" class="border-b border-neutral-900">
+  <div class="mx-auto max-w-4xl px-6 py-20">
+    <p class="text-sm font-semibold uppercase tracking-wider text-emerald">Como rodar</p>
+    <h2 class="mt-3 text-2xl font-bold text-white sm:text-3xl">Roda na sua máquina</h2>
+    <p class="mt-3 max-w-2xl text-neutral-400">
+      Não é um serviço hospedado. Você clona o repositório, aponta para o seu
+      modelo local, coleta os PCDTs da Conitec e o servidor MCP roda ali, no seu
+      computador.
+    </p>
+
+    <div class="mt-8">
+      <CodeBlock code={passos} lang="bash" caption="Confira os comandos e opções no README do projeto." />
+    </div>
+
+    <div class="mt-6 flex gap-3 rounded-xl border border-emerald/25 bg-emerald/5 p-4">
+      <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+      </svg>
+      <p class="text-sm leading-relaxed text-neutral-300">
+        Tudo acontece localmente: a coleta baixa poucos PDFs por execução para
+        respeitar o portal, e o resumo é gerado pelo seu LLM local. Nenhum dado
+        seu é enviado a terceiros por esta ferramenta.
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+---
+const camadas = [
+  {
+    n: "01",
+    titulo: "Coleta",
+    texto: "Lista os PCDTs vigentes da Conitec e baixa os PDFs com cache, poucos por execução para não sobrecarregar o portal.",
+  },
+  {
+    n: "02",
+    titulo: "Extração",
+    texto: "Converte cada PDF em texto segmentado por seção.",
+  },
+  {
+    n: "03",
+    titulo: "Armazenamento",
+    texto: "Guarda tudo localmente em DuckDB, com busca textual pela condição e pelo conteúdo.",
+  },
+  {
+    n: "04",
+    titulo: "Resumo direcionado",
+    texto: "Um LLM local recorta do protocolo a parte que responde ao contexto clínico, sempre com a citação literal do trecho.",
+  },
+  {
+    n: "05",
+    titulo: "Ferramentas MCP",
+    texto: "Expõe a consulta e o resumo como tools, que o modelo local chama.",
+  },
+];
+---
+
+<section id="como-funciona" class="border-b border-neutral-900">
+  <div class="mx-auto max-w-4xl px-6 py-20">
+    <p class="text-sm font-semibold uppercase tracking-wider text-emerald">Como funciona</p>
+    <h2 class="mt-3 text-2xl font-bold text-white sm:text-3xl">
+      Do PDF do protocolo à conduta direcionada
+    </h2>
+
+    <ol class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        camadas.map((c) => (
+          <li class="relative rounded-xl border border-neutral-800 bg-ink-800 p-5">
+            <span class="font-mono text-sm font-bold text-emerald">{c.n}</span>
+            <h3 class="mt-3 text-base font-semibold text-white">{c.titulo}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-neutral-400">{c.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="mt-8 flex gap-3 rounded-xl border border-emerald/25 bg-emerald/5 p-4">
+      <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+      </svg>
+      <p class="text-sm leading-relaxed text-neutral-300">
+        A citação literal é <strong class="font-semibold text-white">conferida, não só pedida</strong>:
+        o código verifica se ela existe inteira e contígua no protocolo e devolve
+        <span class="font-mono text-neutral-300">citacao_confere</span>. Conferir a
+        citação elimina a alucinação de fonte, mas não o erro de interpretação, por
+        isso o link do PDF vem em toda resposta.
+      </p>
+    </div>
+  </div>
+</section>

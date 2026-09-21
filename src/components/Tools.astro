@@ -1,0 +1,84 @@
+---
+import CodeBlock from "./CodeBlock.astro";
+
+const consultarSig = `consultar_protocolo(doenca_ou_condicao: str)`;
+
+const consultarRetorno = `{
+  "termo": "asma",
+  "total": 1,
+  "resultados": [
+    {
+      "identificador": "asma",
+      "condicao": "Asma",
+      "status": "Aprovado",
+      "portaria": "Portaria SECTICS/MS ...",
+      "url_pdf": "https://www.gov.br/conitec/.../pcdt_asma.pdf",
+      "vigente": true,
+      "secoes_disponiveis": ["diagnostico", "tratamento", "monitoramento"],
+      "texto_completo_disponivel": true
+    }
+  ]
+}`;
+
+const resumirSig = `resumir_conduta(pcdt_id: str, contexto_clinico: str)`;
+
+// Formato apenas: o resumo e a citacao_literal sao produzidos em tempo de
+// execucao a partir do PDF real. Nao ha citacao fabricada aqui.
+const resumirRetorno = `{
+  "identificador": "asma",
+  "condicao": "Asma",
+  "contexto_clinico": "paciente gestante",
+  "resumo": {
+    "resumo": "... conduta recortada do protocolo para o contexto ...",
+    "secao_origem": "Tratamento",
+    "citacao_literal": "... trecho literal extraído do PDF ...",
+    "citacao_confere": true,
+    "fracao_citacao_verificada": 1.0
+  },
+  "url_pdf": "https://www.gov.br/conitec/.../pcdt_asma.pdf",
+  "aviso": "Ajuda de leitura gerada por LLM local; confira a citação e abra o PDF."
+}`;
+---
+
+<section id="tools" class="border-b border-neutral-900">
+  <div class="mx-auto max-w-4xl px-6 py-20">
+    <p class="text-sm font-semibold uppercase tracking-wider text-emerald">As ferramentas</p>
+    <h2 class="mt-3 text-2xl font-bold text-white sm:text-3xl">Duas tools MCP expostas ao modelo</h2>
+    <p class="mt-3 max-w-2xl text-neutral-400">
+      Toda resposta traz o link do PDF oficial, e o resumo vem com a citação
+      literal do trecho de origem. Os campos abaixo são os do projeto.
+    </p>
+
+    <div class="mt-10 grid gap-6 lg:grid-cols-2">
+      <article class="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-ink-800 p-5">
+        <div>
+          <h3 class="font-mono text-base font-semibold text-emerald">consultar_protocolo</h3>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-400">
+            PCDT para uma doença ou condição. Busca pelo nome; se não achar,
+            procura no texto, porque uma condição pode ser tratada dentro do PCDT
+            de outra.
+          </p>
+        </div>
+        <CodeBlock code={consultarSig} lang="python" />
+        <CodeBlock code={consultarRetorno} lang="json" caption="Exemplo do formato de retorno" />
+      </article>
+
+      <article class="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-ink-800 p-5">
+        <div>
+          <h3 class="font-mono text-base font-semibold text-emerald">resumir_conduta</h3>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-400">
+            Recorta a parte do protocolo que responde ao contexto, com a citação
+            literal e o campo <span class="font-mono text-neutral-300">citacao_confere</span>,
+            que diz se a citação existe mesmo no texto.
+          </p>
+        </div>
+        <CodeBlock code={resumirSig} lang="python" />
+        <CodeBlock
+          code={resumirRetorno}
+          lang="json"
+          caption="Formato do retorno. O resumo e a citação literal são produzidos em tempo de execução a partir do PDF real; não há exemplo fabricado aqui."
+        />
+      </article>
+    </div>
+  </div>
+</section>
