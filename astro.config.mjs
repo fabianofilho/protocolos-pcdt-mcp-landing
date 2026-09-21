@@ -1,10 +1,10 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 
-// Destino: https://mcp.iamed.cc/pcdt
+// Destino: https://iamed.cc/mcps/pcdt
 export default defineConfig({
-  site: "https://mcp.iamed.cc",
-  base: "/pcdt",
+  site: "https://iamed.cc",
+  base: "/mcps/pcdt",
   output: "static",
   integrations: [tailwind()],
 });
