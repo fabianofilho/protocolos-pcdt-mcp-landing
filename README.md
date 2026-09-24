@@ -22,7 +22,7 @@ npm install
 npm run dev
 ```
 
-Abre em `http://localhost:4321/pcdt` (o `base` é `/pcdt`).
+Abre em `http://localhost:4321/mcps/pcdt` (o `base` é `/mcps/pcdt`).
 
 ## Build
 
@@ -33,16 +33,19 @@ npm run preview
 
 ## Deploy
 
-Destino pretendido: `https://mcp.iamed.cc/pcdt` (`site` + `base` em
-`astro.config.mjs`). O deploy na Vercel e o domínio são configurados manualmente.
+A página é servida em `https://iamed.cc/mcps/pcdt` (`site` + `base` em
+`astro.config.mjs`), pela Vercel. Este repositório não tem integração de Git com a Vercel
+nem GitHub Pages: nada é publicado automaticamente no merge. O deploy é manual e o projeto
+da Vercel que serve esse caminho é configurado fora deste repositório.
 
 ## Notas
 
 - O repositório do projeto `protocolos-pcdt-mcp` é público, então os links de GitHub funcionam.
-- O exemplo de `resumir_conduta` mostra apenas o formato do retorno: o resumo e a
-  citação literal são produzidos em tempo de execução a partir do PDF real, e o
-  campo `citacao_confere` indica se a citação existe mesmo no protocolo. Nenhum
-  resumo ou citação foi fabricado para ilustrar.
+- O servidor é só local, por stdio. A página não aponta para nenhum serviço hospedado.
+- Os exemplos de `consultar_protocolo` e `resumir_conduta` em `Tools.astro` são saídas
+  reais da v0.1.0 do `protocolos-pcdt-mcp`, rodadas em 24/09/2026 numa cópia da base
+  local já migrada. Nenhum resumo ou citação foi escrito à mão. Ao mudar o formato das
+  tools, troque os exemplos por uma saída nova.
 - Não é fonte oficial do Ministério da Saúde nem da Conitec, e não substitui o
   julgamento clínico nem a leitura do protocolo completo.
 
