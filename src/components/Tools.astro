@@ -3,6 +3,8 @@ import CodeBlock from "./CodeBlock.astro";
 
 const consultarSig = `consultar_protocolo(doenca_ou_condicao: str)`;
 
+// Saídas reais das tools da v0.1.0, rodadas em 24/09/2026 numa cópia da base
+// local já migrada. Nada aqui foi escrito à mão.
 const consultarRetorno = `{
   "termo": "asma",
   "total": 1,
@@ -10,33 +12,37 @@ const consultarRetorno = `{
     {
       "identificador": "asma",
       "condicao": "Asma",
-      "status": "Aprovado",
-      "portaria": "Portaria SECTICS/MS ...",
-      "url_pdf": "https://www.gov.br/conitec/.../pcdt_asma.pdf",
+      "status": null,
+      "portaria": "Portaria Conjunta SAES/SCTIE/MS nº 43 - 24/03/2026 (Publicada em 02/04/2026 )",
+      "data_portaria": "2026-03-24",
+      "nota_atualizacao": "Anexo alterado em 04/09/2026",
+      "url_pdf": "https://www.gov.br/conitec/pt-br/midias/protocolos/2026/asma-portaria-conjunta-saes-sctie-no-43.pdf/@@display-file/file",
+      "url_resumido": "https://www.gov.br/conitec/pt-br/midias/protocolos/2026/pcdt-resumido/pcdt_resumido_asma_f.pdf/@@display-file/file",
       "vigente": true,
-      "secoes_disponiveis": ["diagnostico", "tratamento", "monitoramento"],
-      "texto_completo_disponivel": true
+      "secoes_disponiveis": ["tratamento", "monitoramento", "diagnostico", "introducao", "classificacao"],
+      "texto_completo_disponivel": true,
+      "extracao_incompleta": false,
+      "origem": "nome"
     }
-  ]
+  ],
+  "aviso": null
 }`;
 
 const resumirSig = `resumir_conduta(pcdt_id: str, contexto_clinico: str)`;
 
-// Formato apenas: o resumo e a citacao_literal sao produzidos em tempo de
-// execucao a partir do PDF real. Nao ha citacao fabricada aqui.
 const resumirRetorno = `{
-  "identificador": "asma",
-  "condicao": "Asma",
-  "contexto_clinico": "paciente gestante",
+  "identificador": "acidentes ofídicos",
+  "condicao": "Acidentes Ofídicos",
+  "contexto_clinico": "paciente picado por jararaca",
   "resumo": {
-    "resumo": "... conduta recortada do protocolo para o contexto ...",
-    "secao_origem": "Tratamento",
-    "citacao_literal": "... trecho literal extraído do PDF ...",
+    "resumo": "Para o tratamento de acidentes envolvendo serpentes de importância médica, como a jararaca, é necessário utilizar a soroterapia antiveneno específica, correspondente ao tipo de envenenamento.",
+    "secao_origem": "Introdução",
+    "citacao_literal": "Para o tratamento de acidentes envolvendo essas serpentes, é necessário utilizar a soroterapia antiveneno específica, correspondente ao tipo de envenenamento",
     "citacao_confere": true,
     "fracao_citacao_verificada": 1.0
   },
-  "url_pdf": "https://www.gov.br/conitec/.../pcdt_asma.pdf",
-  "aviso": "Ajuda de leitura gerada por LLM local; confira a citação e abra o PDF."
+  "url_pdf": "https://www.gov.br/conitec/pt-br/midias/protocolos/pcdt_acidentes_ofidicos_final.pdf/@@display-file/file",
+  "aviso": "O resumo é uma ajuda de leitura gerada por LLM local, não substitui o protocolo. Confira a citação literal e abra o PDF completo antes de qualquer decisão."
 }`;
 ---
 
@@ -46,7 +52,8 @@ const resumirRetorno = `{
     <h2 class="mt-3 text-2xl font-bold text-white sm:text-3xl">Duas tools MCP expostas ao modelo</h2>
     <p class="mt-3 max-w-2xl text-neutral-400">
       Toda resposta traz o link do PDF oficial, e o resumo vem com a citação
-      literal do trecho de origem. Os campos abaixo são os do projeto.
+      literal do trecho de origem. Os exemplos abaixo são saídas reais da v0.1.0,
+      de 24/09/2026.
     </p>
 
     <div class="mt-10 grid gap-6 lg:grid-cols-2">
@@ -54,13 +61,22 @@ const resumirRetorno = `{
         <div>
           <h3 class="font-mono text-base font-semibold text-emerald">consultar_protocolo</h3>
           <p class="mt-2 text-sm leading-relaxed text-neutral-400">
-            PCDT para uma doença ou condição. Busca pelo nome; se não achar,
-            procura no texto, porque uma condição pode ser tratada dentro do PCDT
-            de outra.
+            PCDT vigente para uma doença ou condição. Busca pelo nome sem acento,
+            com as palavras em qualquer ordem e aceitando siglas como HAS, DPOC e
+            DM2 (devolve até 10). Se o nome não casar, procura o termo no texto e
+            devolve até 5 com <span class="font-mono text-neutral-300">origem: "texto"</span>
+            e um aviso, porque esses só citam o termo.
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-400">
+            A nota de revisão que o portal põe no nome vai para
+            <span class="font-mono text-neutral-300">nota_atualizacao</span>, e o
+            identificador fica estável. O <span class="font-mono text-neutral-300">status</span>
+            vem do CSV de dados abertos e é parcial: <span class="font-mono text-neutral-300">null</span>
+            não quer dizer que o protocolo não está aprovado.
           </p>
         </div>
         <CodeBlock code={consultarSig} lang="python" />
-        <CodeBlock code={consultarRetorno} lang="json" caption="Exemplo do formato de retorno" />
+        <CodeBlock code={consultarRetorno} lang="json" caption='Saída real de consultar_protocolo("asma")' />
       </article>
 
       <article class="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-ink-800 p-5">
@@ -69,14 +85,17 @@ const resumirRetorno = `{
           <p class="mt-2 text-sm leading-relaxed text-neutral-400">
             Recorta a parte do protocolo que responde ao contexto, com a citação
             literal e o campo <span class="font-mono text-neutral-300">citacao_confere</span>,
-            que diz se a citação existe mesmo no texto.
+            que diz se a citação existe mesmo no texto. Aceita o identificador de
+            <span class="font-mono text-neutral-300">consultar_protocolo</span> ou o
+            nome da condição. Sem o LLM local ou sem o texto já coletado, devolve só
+            o link do PDF e um aviso dizendo o que faltou.
           </p>
         </div>
         <CodeBlock code={resumirSig} lang="python" />
         <CodeBlock
           code={resumirRetorno}
           lang="json"
-          caption="Formato do retorno. O resumo e a citação literal são produzidos em tempo de execução a partir do PDF real; não há exemplo fabricado aqui."
+          caption="Saída real, com um Qwen 9B local. Quando a citação não é achada no protocolo, citacao_confere vem false e o aviso manda conferir no PDF."
         />
       </article>
     </div>

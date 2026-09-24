@@ -17,8 +17,19 @@ uv run pcdt-cli llm                 # confirma que o LLM local responde
 uv run pcdt-cli sync --max-pdfs 5   # teste rápido
 uv run pcdt-cli sync                # coleta (20 PDFs por execução)
 
-# 5. subir o servidor MCP (stdio) e conectar ao seu cliente
-uv run protocolos-pcdt-mcp`;
+# 5. registrar o servidor MCP (stdio) no seu cliente, ex. Claude Code
+claude mcp add protocolos-pcdt --scope user \\
+  -e DUCKDB_PATH=/caminho/para/protocolos-pcdt-mcp/data/pcdt.duckdb \\
+  -e QWEN_ENDPOINT=http://127.0.0.1:8080/v1 \\
+  -e QWEN_MODEL=local-model \\
+  -- uv --directory /caminho/para/protocolos-pcdt-mcp run protocolos-pcdt-mcp`;
+
+const timer = `# sync diário (timer systemd de usuário versionado no repo)
+mkdir -p ~/.config/systemd/user
+cp deploy/systemd/protocolos-pcdt-sync.service deploy/systemd/protocolos-pcdt-sync.timer \\
+  ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now protocolos-pcdt-sync.timer`;
 ---
 
 <section id="como-rodar" class="border-b border-neutral-900">
@@ -26,13 +37,23 @@ uv run protocolos-pcdt-mcp`;
     <p class="text-sm font-semibold uppercase tracking-wider text-emerald">Como rodar</p>
     <h2 class="mt-3 text-2xl font-bold text-white sm:text-3xl">Roda na sua máquina</h2>
     <p class="mt-3 max-w-2xl text-neutral-400">
-      Não é um serviço hospedado. Você clona o repositório, aponta para o seu
-      modelo local, coleta os PCDTs da Conitec e o servidor MCP roda ali, no seu
-      computador.
+      Não é um serviço hospedado e não há versão remota. Você clona o
+      repositório, aponta para o seu modelo local, coleta os PCDTs da Conitec e o
+      servidor MCP roda ali, no seu computador, só por stdio e sem porta de rede.
     </p>
 
     <div class="mt-8">
       <CodeBlock code={passos} lang="bash" caption="Confira os comandos e opções no README do projeto." />
+    </div>
+
+    <p class="mt-8 max-w-2xl text-neutral-400">
+      A coleta baixa no máximo 20 PDFs por execução, então a base completa ao
+      longo de algumas noites. O servidor não agenda nada sozinho: o sync diário
+      é um timer systemd, que roda às 02:40 com até 30 min de atraso aleatório.
+    </p>
+
+    <div class="mt-4">
+      <CodeBlock code={timer} lang="bash" caption="As units supõem o clone em ~/protocolos-pcdt-mcp e o uv em ~/.local/bin/uv. Ajuste WorkingDirectory e ExecStart se for diferente." />
     </div>
 
     <div class="mt-6 flex gap-3 rounded-xl border border-emerald/25 bg-emerald/5 p-4">
@@ -41,9 +62,11 @@ uv run protocolos-pcdt-mcp`;
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
       </svg>
       <p class="text-sm leading-relaxed text-neutral-300">
-        Tudo acontece localmente: a coleta baixa poucos PDFs por execução para
-        respeitar o portal, e o resumo é gerado pelo seu LLM local. Nenhum dado
-        seu é enviado a terceiros por esta ferramenta.
+        Só saem da máquina as requisições ao portal da Conitec e aos dados abertos
+        do Ministério da Saúde, para baixar a listagem e os PDFs públicos. A
+        condição e o contexto clínico ficam entre a base local e o seu LLM. Se o
+        seu endpoint de LLM estiver fora da sua máquina, o contexto vai junto:
+        esta ferramenta não impede isso.
       </p>
     </div>
   </div>
