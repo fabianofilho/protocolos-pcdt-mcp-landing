@@ -65,7 +65,8 @@ const resumirRetorno = `{
             com as palavras em qualquer ordem e aceitando siglas como HAS, DPOC e
             DM2 (devolve até 10). Se o nome não casar, procura o termo no texto e
             devolve até 5 com <span class="font-mono text-neutral-300">origem: "texto"</span>
-            e um aviso, porque esses só citam o termo.
+            e um aviso, porque esses só citam o termo. Cada resultado traz portaria, data, nota de
+            atualização e quais seções foram reconhecidas no texto.
           </p>
           <p class="mt-2 text-sm leading-relaxed text-neutral-400">
             A nota de revisão que o portal põe no nome vai para
@@ -88,7 +89,9 @@ const resumirRetorno = `{
             que diz se a citação existe mesmo no texto. Aceita o identificador de
             <span class="font-mono text-neutral-300">consultar_protocolo</span> ou o
             nome da condição. Sem o LLM local ou sem o texto já coletado, devolve só
-            o link do PDF e um aviso dizendo o que faltou.
+            o link do PDF e um aviso dizendo o que faltou. O protocolo é truncado antes
+            de ir ao modelo (passam de 200 mil caracteres): o recorte prioriza a
+            vizinhança das palavras do contexto, mas pode cortar fora a parte relevante.
           </p>
         </div>
         <CodeBlock code={resumirSig} lang="python" />

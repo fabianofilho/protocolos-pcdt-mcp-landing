@@ -4,7 +4,10 @@ const itens = [
   "Não substitui o julgamento clínico nem a leitura do protocolo completo.",
   "O resumo é gerado por LLM e pode conter erro. Por isso vem sempre com a citação literal do trecho de origem e o link para o PDF oficial, que devem ser conferidos.",
   "PCDTs são revisados periodicamente. Quando o PDF, a portaria ou a nota de revisão mudam, o sync descarta o texto antigo e recoleta, mas a cópia local pode estar defasada: confirme a vigência na fonte.",
-  "Conferir a citação não pega erro de interpretação: num teste, o modelo citou um trecho real e mesmo assim classificou picada de cascavel como acidente botrópico.",
+  "Conferir a citação não pega erro de interpretação. Num teste com \"paciente picado por cascavel\", o modelo devolveu uma citação real e contígua do protocolo e mesmo assim classificou o caso como envenenamento botrópico, quando cascavel é crotálico. A citação estava certa, o raciocínio em cima dela não. É a limitação mais importante do projeto.",
+  "O protocolo é truncado antes de ir para o modelo. Protocolos passam de 200 mil caracteres, e o recorte prioriza a vizinhança das palavras do contexto perguntado, mas pode cortar fora a parte relevante.",
+  "A segmentação por seções é heurística. Quando os títulos não são reconhecíveis, a lista de seções vem vazia de propósito, para não inventar estrutura.",
+  "Não é apoio à decisão clínica nem dispositivo médico.",
 ];
 ---
 

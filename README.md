@@ -4,7 +4,7 @@ Landing page do
 [`protocolos-pcdt-mcp`](https://github.com/fabianofilho/protocolos-pcdt-mcp), um
 servidor MCP que consulta os PCDTs vigentes do Ministério da Saúde/Conitec e
 resume a conduta para um contexto clínico, com um LLM local. Um projeto
-[IA.med](https://iamed.cc), da mesma família do `anvisa-mcp` e do `radar-cfm-mcp`.
+[IA.med](https://iamed.cc), da família de sete MCPs da IA.med (cinco de código aberto).
 
 Página estática, sem backend e sem coleta de dados de visitante.
 
@@ -46,6 +46,8 @@ da Vercel que serve esse caminho é configurado fora deste repositório.
   reais da v0.1.0 do `protocolos-pcdt-mcp`, rodadas em 24/09/2026 numa cópia da base
   local já migrada. Nenhum resumo ou citação foi escrito à mão. Ao mudar o formato das
   tools, troque os exemplos por uma saída nova.
+- Números publicados na página (132 protocolos, base de 138 MB, 113 testes) foram lidos
+  em 12/10/2026 e levam essa data. Reconfira antes de atualizar.
 - Não é fonte oficial do Ministério da Saúde nem da Conitec, e não substitui o
   julgamento clínico nem a leitura do protocolo completo.
 
