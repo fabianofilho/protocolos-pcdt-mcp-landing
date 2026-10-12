@@ -8,17 +8,17 @@ const camadas = [
   {
     n: "02",
     titulo: "Extração",
-    texto: "Converte cada PDF em texto segmentado por seção.",
+    texto: "Converte cada PDF em texto segmentado por seção. A segmentação é heurística: sem títulos reconhecíveis, a lista de seções fica vazia.",
   },
   {
     n: "03",
     titulo: "Armazenamento",
-    texto: "Guarda tudo localmente em DuckDB, com busca textual pela condição e pelo conteúdo.",
+    texto: "Guarda tudo localmente em DuckDB, com busca textual pela condição e pelo conteúdo. Em 12/10/2026, 132 protocolos, todos com texto completo e seções extraídas. A base tem 138 MB, quase toda índice de busca textual.",
   },
   {
     n: "04",
     titulo: "Resumo direcionado",
-    texto: "Um LLM local recorta do protocolo a parte que responde ao contexto clínico, sempre com a citação literal do trecho.",
+    texto: "Um LLM local recorta do protocolo a parte que responde ao contexto clínico, sempre com a citação literal do trecho. O protocolo é truncado antes de ir ao modelo.",
   },
   {
     n: "05",

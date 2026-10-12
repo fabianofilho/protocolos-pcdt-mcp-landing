@@ -15,7 +15,7 @@ uv run pcdt-cli llm                 # confirma que o LLM local responde
 
 # 4. coletar os protocolos
 uv run pcdt-cli sync --max-pdfs 5   # teste rápido
-uv run pcdt-cli sync                # coleta (20 PDFs por execução)
+uv run pcdt-cli sync --publicar     # coleta (20 PDFs por execução)
 
 # 5. registrar o servidor MCP (stdio) no seu cliente, ex. Claude Code
 claude mcp add protocolos-pcdt --scope user \\
@@ -37,7 +37,7 @@ systemctl --user enable --now protocolos-pcdt-sync.timer`;
     <p class="text-sm font-semibold uppercase tracking-wider text-emerald">Como rodar</p>
     <h2 class="mt-3 text-2xl font-bold text-white sm:text-3xl">Roda na sua máquina</h2>
     <p class="mt-3 max-w-2xl text-neutral-400">
-      Não é um serviço hospedado e não há versão remota. Você clona o
+      Não é um serviço hospedado: não há conector no ar e não há versão remota. Você clona o
       repositório, aponta para o seu modelo local, coleta os PCDTs da Conitec e o
       servidor MCP roda ali, no seu computador, só por stdio e sem porta de rede.
     </p>
